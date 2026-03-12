@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Contacts</title>
+    <link rel="stylesheet" href="./assets/bootstrap.css" />
+  </head>
+  <body style="background-color: #e8e8e8">
+    <!-- navbar component -->
+    <nav class="navbar" style="background-color: #e8e8e8">
+      <div class="container-fluid">
+        <!-- menu and logo -->
+        <div class="">
+          <a class="navbar-brand" href="#">
+            <img
+              src="./icons/menu.svg"
+              alt=""
+              data-bs-toggle="collapse"
+              data-bs-target="#ShowHideSidebar"
+              aria-expanded="false"
+              aria-controls="collapseWidthExample"
+            />
+            <img
+              src="./icons/person.svg"
+              alt="Google Contacts Logo"
+              width=""
+              height="40"
+              class="d-inline-block align-text-top"
+            />
+            Contacts
+          </a>
+        </div>
+
+        <!-- search bar -->
+        <div class="w-50">
+          <form class="d-flex input-group" role="search">
+            <span class="input-group-text">
+              <img src="./icons/search.svg" alt="" />
+            </span>
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </form>
+        </div>
+
+        <!-- help, settings, apps and login -->
+        <div class="">
+          <a class="navbar-brand" href="#">
+            <img
+              src="./icons/help.svg"
+              alt=""
+              width=""
+              height="24"
+              class="d-inline-block align-text-top"
+            />
+          </a>
+          <a class="navbar-brand" href="#">
+            <img
+              src="./icons/settings.svg"
+              alt=""
+              width=""
+              height="24"
+              class="d-inline-block align-text-top"
+            />
+          </a>
+          <a class="navbar-brand" href="#">
+            <img
+              src="./icons/apps.svg"
+              alt=""
+              width=""
+              height="24"
+              class="d-inline-block align-text-top"
+            />
+          </a>
+          <a class="navbar-brand" href="#">
+            <img
+              src="./icons/person.svg"
+              alt=""
+              width=""
+              height="24"
+              class="d-inline-block align-text-top"
+            />
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- container for sidebar and main -->
+    <div class="container-fluid d-flex">
+      <!-- sidebar -->
+      <div
+        class="col-2 p-3 collapse show collapse-horizontal"
+        id="ShowHideSidebar"
+      >
+        <button type="button" class="btn btn-info">
+          <a class="nav-link text-body" aria-current="page" href="#">
+            <img class="bi" src="./icons/add.svg" alt="" /> Create contact
+          </a>
+        </button>
+
+        <!-- Contacts List -->
+        <ul class="nav flex-column">
+          <li
+            class="nav-item rounded-5 list-group-item-action list-group-item-info"
+          >
+            <a class="nav-link text-body" aria-current="page" href="#">
+              <img class="bi" src="./icons/person.svg" alt="" /> Contacts
+            </a>
+          </li>
+          <li
+            class="nav-item rounded-5 list-group-item-action list-group-item-info"
+          >
+            <a class="nav-link text-body" href="#">
+              <img class="bi" src="./icons/history.svg" alt="" /> Frequents
+            </a>
+          </li>
+          <li
+            class="nav-item rounded-5 list-group-item-action list-group-item-info"
+          >
+            <a class="nav-link text-body" href="#">
+              <img class="bi" src="./icons/download.svg" alt="" /> Others
+            </a>
+          </li>
+        </ul>
+
+        <!-- Manage List-->
+        Manage
+        <ul class="nav flex-column">
+          <li
+            class="nav-item rounded-5 list-group-item-action list-group-item-info"
+          >
+            <a class="nav-link text-body" href="#">
+              <img class="bi" src="./icons/settings.svg" alt="" /> Fix and Merge
+            </a>
+          </li>
+          <li
+            class="nav-item rounded-5 list-group-item-action list-group-item-info"
+          >
+            <a class="nav-link text-body" href="#">
+              <img class="bi" src="./icons/download.svg" alt="" /> Import</a
+            >
+          </li>
+          <li
+            class="nav-item rounded-5 list-group-item-action list-group-item-info"
+          >
+            <a class="nav-link text-body" href="#">
+              <img class="bi" src="./icons/delete.svg" alt="" /> Bin</a
+            >
+          </li>
+        </ul>
+        
+        <!-- Tags List-->
+        Tags
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link text-body" href="#">
+              <img class="bi" src="./icons/label.svg" alt="" /> Programming</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-body" href="#">
+              <img class="bi" src="./icons/label.svg" alt="" /> Communication</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-body" href="#">
+              <img class="bi" src="./icons/label.svg" alt="" /> English</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- main -->
+      <div class="col-9 m-3 p-3 rounded-3 bg-light">
+        <h1 class="h3">Contacts</h1>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Telephone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>John</td>
+              <td>Doe</td>
+              <td>@social</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="./assets/bootstrap.bundle.js"></script>
+  </body>
+</html>
