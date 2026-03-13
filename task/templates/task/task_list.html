@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Tareas</title>
+  <!-- Vincular Bootstrap local -->
+  <link rel="stylesheet" href="{% static 'assets/bootstrap.css' %}">
+  <script src="{% static 'assets/bootstrap.bundle.js' %}"></script>
+</head>
+<body style="background-color: #f8f9fa;">
+
+<div class="container mt-4">
+  <h2 class="mb-3">Lista de Tareas</h2>
+  <!-- Botón para crear nueva tarea -->
+  <a href="{% url 'task_create' %}" class="btn btn-success mb-3">
+    <img src="{% static 'icons/add.svg' %}" alt="Agregar" width="20"> Nueva tarea
+  </a>
+
+  <!-- Tabla de tareas -->
+  <table class="table table-hover table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Completada</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+      <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.description }}</td>
+        <td>{{ task.date }}</td>
+        <td>{{ task.time }}</td>
+        <td>
+          {% if task.completed %}
+            <img src="{% static 'icons/check.svg' %}" alt="Completada" width="20">
+          {% else %}
+            <img src="{% static 'icons/history.svg' %}" alt="Pendiente" width="20">
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url 'task_update' task.pk %}" class="btn btn-primary btn-sm">Editar</a>
+          <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+          <a href="{% url 'task_toggle' task.pk %}" class="btn btn-secondary btn-sm">Toggle</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center">No hay tareas registradas</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
