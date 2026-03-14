@@ -68,6 +68,9 @@ def task_delete(request, pk):
         return redirect('task_list')
     return render(request, 'task/task_confirm_delete.html', {'task': task})
 
+def my_tasks(request):
+    return render(request, 'task/my_tasks.html')
+
 # --- LISTS ---
 def list_list(request):
     lists = List.objects.all()
@@ -101,11 +104,25 @@ def list_delete(request, pk):
         return redirect('list_list')
     return render(request, 'task/list_confirm_delete.html', {'list': lista})
 
+# --- TOGGLES ---
 def task_toggle(request, pk):
     task = get_object_or_404(Task, pk=pk)
     task.completed = not task.completed
     task.save()
     return redirect('task_list')
 
+def task_toggle_star(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.starred = not task.starred
+    task.save()
+    # redirige a la vista de starred para que se vea el cambio
+    return redirect('starred_tasks')
+
+# --- STARRED ---
+def starred_tasks(request):
+    tasks = Task.objects.filter(starred=True)
+    return render(request, 'task/starred.html', {'tasks': tasks})
+
+# --- EXTRA ---
 def go_to_google(request):
     return redirect("https://www.google.com")

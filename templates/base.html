@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Task Manager{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'assets/bootstrap.css' %}">
+  <script src="{% static 'assets/bootstrap.bundle.js' %}"></script>
+  <style>
+    body { background-color: #f8f9fa; }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed; top: 0; left: 0; height: 100vh;
+      width: 300px; background-color: #f8f9fa; color: #212529;
+      border-right: 1px solid #dee2e6;
+      display: flex; flex-direction: column;
+    }
+
+    .sidebar-header {
+      display: flex; align-items: center; padding: 1rem;
+      flex-shrink: 0;
+    }
+
+    #sidebar-menu {
+      flex-grow: 1;
+      transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out;
+    }
+    #sidebar-menu.hidden {
+      opacity: 0; visibility: hidden; height: 0; overflow: hidden;
+    }
+
+    .content {
+      margin-left: 300px; padding: 2rem;
+      transition: margin-left 0.3s ease-in-out;
+    }
+    .content.expanded {
+      margin-left: 80px;
+    }
+
+    .sidebar a {
+      color: #212529; text-decoration: none; display: flex;
+      align-items: center; gap: 10px; padding: 0.75rem 1rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover { background-color: #e9ecef; color: #000; }
+    .sidebar h4 { margin-left: 0.5rem; }
+
+    .menu-toggle { cursor: pointer; font-size: 24px; margin-right: 10px; }
+    .btn-create { background-color: #fff; color: #000; border: 1px solid #dee2e6; }
+    .btn-create:hover { background-color: #f8f9fa; color: #000; }
+
+    .btn-task {
+      background-color: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-weight: 500;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease-in-out;
+    }
+    .btn-task:hover { background-color: #1669c1; }
+    .btn-task img { margin-right: 8px; }
+
+    /* Pestañas flotantes */
+    .floating-pane {
+      display:none; position:absolute; top:40px; right:20px; left:20px;
+      max-width:600px; margin:auto; z-index:1000; background:#fff;
+    }
+
+    .floating-pane-visible {
+    display: block; /* siempre visible */
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    left: 20px;
+    max-width: 600px;
+    margin: auto;
+    z-index: 1000;
+    background: #fff;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <span class="menu-toggle" onclick="toggleMenu()">&#9776;</span>
+    <img src="{% static 'icons/tasks_logo.svg' %}" alt="Tasks Logo" width="40" class="ms-2">
+    <h4 class="ms-1">Tasks</h4>
+  </div>
+
+  <div id="sidebar-menu">
+    <a href="javascript:void(0)" 
+       class="mt-3 btn btn-create w-75 d-flex align-items-center justify-content-center mb-4 ms-3"
+       onclick="toggleCreateTaskPane()">
+      <img src="{% static 'icons/add.svg' %}" alt="Create Task" width="20"> Create
+    </a>
+    <a href="{% url 'task_list' %}" class="ms-3">
+      <img src="{% static 'icons/apps.svg' %}" alt="All Tasks" width="20"> All tasks
+    </a>
+    <a href="{% url 'starred_tasks' %}" class="ms-3">
+      <img src="{% static 'icons/star.svg' %}" alt="Starred" width="20"> Starred
+    </a>
+    <a href="javascript:void(0)" class="text-decoration-none ms-3 fw-bold" onclick="toggleSection('mytasks-submenu')">
+      <h5 class="d-inline">Lists</h5>
+    </a>
+    <div id="mytasks-submenu" class="ms-3">
+      <a href="#"><img src="{% static 'icons/archive.svg' %}" alt="My Tasks" width="15"> My Tasks</a>
+    </div>
+    <a href="javascript:void(0)" class="ms-3" onclick="toggleCreateListPane()">
+      <img src="{% static 'icons/add.svg' %}" alt="New List" width="20"> Create new list
+    </a>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="content" id="content">
+  {% block content %}{% endblock %}
+</div>
+
+<!-- Pestaña flotante Create Task -->
+<div id="create-task-pane" class="floating-pane card shadow p-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Create Task</h5>
+    <button type="button" class="btn-close" aria-label="Close" onclick="toggleCreateTaskPane()"></button>
+  </div>
+  <form method="post" action="{% url 'task_create' %}">
+    {% csrf_token %}
+    <div class="mb-2">
+      <input type="text" name="title" class="form-control" placeholder="Add title">
+    </div>
+    <div class="d-flex gap-2 mb-2">
+      <input type="date" name="date" class="form-control" style="max-width:200px;">
+      <input type="time" name="time" class="form-control" style="max-width:150px;">
+    </div>
+    <div class="form-check mb-2">
+      <input type="checkbox" class="form-check-input" id="allDay" name="all_day">
+      <label class="form-check-label" for="allDay">All day</label>
+    </div>
+    <div class="mb-2">
+      <select name="repeat" class="form-select">
+        <option selected>Does not repeat</option>
+        <option>Daily</option>
+        <option>Weekly</option>
+        <option>Monthly</option>
+      </select>
+    </div>
+    <div class="mb-2">
+      <textarea name="description" class="form-control" placeholder="Add description"></textarea>
+    </div>
+    <div class="mb-2">
+      <select name="list" class="form-select">
+        <option selected>My Tasks</option>
+      </select>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>
+
+<!-- Pestaña flotante Create New List -->
+<div id="create-list-pane" class="floating-pane card shadow p-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Create new list</h5>
+    <button type="button" class="btn-close" aria-label="Close" onclick="toggleCreateListPane()"></button>
+  </div>
+  <form method="post" action="{% url 'list_create' %}">
+    {% csrf_token %}
+    <div class="mb-2">
+      <input type="text" name="name" class="form-control" placeholder="Enter name">
+    </div>
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-link" onclick="toggleCreateListPane()">Cancel</button>
+      <button type="submit" class="btn btn-primary">Done</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function toggleSection(id) {
+    const section = document.getElementById(id);
+    section.style.display = (section.style.display === "none") ? "block" : "none";
+  }
+  document.getElementById("mytasks-submenu").style.display = "none";
+
+  function toggleMenu() {
+    const menu = document.getElementById("sidebar-menu");
+    const content = document.getElementById("content");
+    menu.classList.toggle("hidden");
+    content.classList.toggle("expanded");
+  }
+
+  function toggleCreateTaskPane() {
+    const pane = document.getElementById("create-task-pane");
+    pane.style.display = (pane.style.display === "none") ? "block" : "none";
+  }
+
+  function toggleCreateListPane() {
+    const pane = document.getElementById("create-list-pane");
+    pane.style.display = (pane.style.display === "none") ? "block" : "none";
+  }
+</script>
+
+</body>

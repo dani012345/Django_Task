@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Starred Tasks{% endblock %}
+{% block content %}
+
+<h2 class="mt-4">Starred tasks</h2>
+<p class="text-muted">Add a starred task</p>
+
+{% if tasks %}
+  <ul class="list-group mt-3">
+    {% for task in tasks %}
+      <li class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <strong>{{ task.title }}</strong>
+          <a href="{% url 'task_toggle_star' task.pk %}" class="btn btn-sm">
+            {% if task.starred %}
+              <span class="text-warning">&#9733;</span>
+            {% else %}
+              <span class="text-secondary">&#9734;</span>
+            {% endif %}
+          </a>
+        </div>
+        {% if task.description %}
+          <p class="text-muted">{{ task.description }}</p>
+        {% endif %}
+        <div class="d-flex gap-2 mb-2">
+          <button type="button" class="btn btn-light border">Today</button>
+          <button type="button" class="btn btn-light border">Tomorrow</button>
+          <button type="button" class="btn btn-light border">
+            <img src="{% static 'icons/calendar.svg' %}" alt="Calendar" width="16"> Pick a date
+          </button>
+        </div>
+        <small class="text-muted">List: {{ task.list.name|default:"My Tasks" }}</small>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="empty-state text-center mt-5">
+    <img src="{% static 'icons/star_empty.svg' %}" alt="No starred tasks illustration" style="max-width:250px;">
+    <h3>No starred tasks</h3>
+    <p>Mark important tasks with a star so you can easily find them here</p>
+  </div>
+{% endif %}
+
+{% endblock %}

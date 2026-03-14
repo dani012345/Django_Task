@@ -37,7 +37,22 @@ class Task(models.Model):
     description = models.TextField(blank=True)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
+    all_day = models.BooleanField(default=False)
+    repeat = models.CharField(
+        max_length=20,
+        choices=[
+            ("none", "Does not repeat"),
+            ("daily", "Daily"),
+            ("weekly", "Weekly on Friday"),
+            ("monthly", "Monthly on day 13"),
+            ("annually", "Annually on March 13"),
+            ("custom", "Custom"),
+        ],
+        default="none"
+    )
     completed = models.BooleanField(default=False)
+    starred = models.BooleanField(default=False)  # ⭐ nuevo campo
 
     def __str__(self):
         return self.title
+    
