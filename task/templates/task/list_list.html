@@ -3,8 +3,6 @@
 {% block title %}Lists{% endblock %}
 {% block content %}
 
-<h2 class="mt-4">Lists</h2>
-
 {% if lists %}
   <ul class="list-group mt-3">
     {% for lista in lists %}
@@ -23,7 +21,7 @@
 {% else %}
   <div class="empty-state text-center mt-5">
     <img src="{% static 'icons/list_empty.svg' %}" alt="No lists illustration" style="max-width:250px;">
-    <h3>No lists yet</h3>
+    <h5>No lists yet</h5>
     <p>Create a new list to organize your tasks</p>
   </div>
 {% endif %}

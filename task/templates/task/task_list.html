@@ -1,30 +1,21 @@
 {% extends "base.html" %}
 {% load static %}
+{% block page_title %}My Tasks{% endblock %}
 {% block title %}My Tasks{% endblock %}
 {% block content %}
 
-<h2 class="mt-4">My Tasks</h2>
-
-<!-- Botón Add a task -->
-<button class="btn-task mb-3" onclick="toggleAddTaskForm()">
-  <img src="{% static 'icons/add.svg' %}" alt="Add" width="20">
-  Add a task
-</button>
 
 <!-- Formulario inline Add a task -->
 <div id="add-task-form" class="card p-3 mt-3" style="display:none; max-width:500px;">
   <form method="post" action="{% url 'task_create' %}">
     {% csrf_token %}
-    <!-- Checkbox + Title -->
     <div class="d-flex align-items-center mb-2">
       <input type="checkbox" class="form-check-input me-2">
       <input type="text" name="title" class="form-control" placeholder="Title">
     </div>
-    <!-- Details -->
     <div class="mb-2">
       <textarea name="description" class="form-control" placeholder="Details"></textarea>
     </div>
-    <!-- Botones rápidos de fecha -->
     <div class="d-flex gap-2 mb-2">
       <button type="button" class="btn btn-light border" onclick="setDate('today')">Today</button>
       <button type="button" class="btn btn-light border" onclick="setDate('tomorrow')">Tomorrow</button>
@@ -32,9 +23,7 @@
         <img src="{% static 'icons/calendar.svg' %}" alt="Calendar" width="16"> Pick a date
       </button>
     </div>
-    <!-- Campo de fecha oculto -->
     <input type="date" id="task-date" name="date" class="form-control mb-2" style="display:none;">
-    <!-- Botones Save y Cancel -->
     <div class="d-flex gap-2">
       <button type="submit" class="btn btn-primary">Save</button>
       <button type="button" class="btn btn-secondary" onclick="toggleAddTaskForm()">Cancel</button>
@@ -49,15 +38,13 @@
       <li class="list-group-item d-flex justify-content-between align-items-center">
         {{ task.title }}
         <div class="d-flex gap-2">
-          <!-- Botón estrella -->
           <a href="{% url 'task_toggle_star' task.pk %}" class="btn btn-sm">
             {% if task.starred %}
-              <span class="text-warning">&#9733;</span> <!-- estrella llena -->
+              <span class="text-warning">&#9733;</span>
             {% else %}
-              <span class="text-secondary">&#9734;</span> <!-- estrella vacía -->
+              <span class="text-secondary">&#9734;</span>
             {% endif %}
           </a>
-          <!-- Botón toggle completado -->
           <a href="{% url 'task_toggle' task.pk %}" class="btn btn-outline-success btn-sm">
             {% if task.completed %}Undo{% else %}Complete{% endif %}
           </a>
@@ -66,55 +53,12 @@
     {% endfor %}
   </ul>
 {% else %}
-  <!-- Estado vacío -->
   <div class="empty-state text-center mt-5">
-    <img src="{% static 'icons/add_task.png' %}" alt="No tasks illustration" style="max-width:500px;"width="125" >
-    <h3>No tasks yet</h3>
+    <img src="{% static 'icons/add_task.png' %}" alt="No tasks illustration" style="max-width:250px;">
+    <h5>No tasks yet</h5>
     <p>Add your to-dos and keep track of them across your workspace</p>
   </div>
 {% endif %}
-  
-  <!-- Header con título y botón de cerrar -->
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">Create Task</h5>
-    <button type="button" class="btn-close" aria-label="Close" onclick="toggleCreateTaskPane()"></button>
-  </div>
-
-  <!-- Formulario -->
-  <form method="post" action="{% url 'task_create' %}">
-    {% csrf_token %}
-    <div class="mb-2">
-      <input type="text" name="title" class="form-control" placeholder="Add title">
-    </div>
-    <div class="d-flex gap-2 mb-2">
-      <input type="date" name="date" class="form-control" style="max-width:200px;">
-      <input type="time" name="time" class="form-control" style="max-width:150px;">
-    </div>
-    <div class="form-check mb-2">
-      <input type="checkbox" class="form-check-input" id="allDay" name="all_day">
-      <label class="form-check-label" for="allDay">All day</label>
-    </div>
-    <div class="mb-2">
-      <select name="repeat" class="form-select">
-        <option selected>Does not repeat</option>
-        <option>Daily</option>
-        <option>Weekly</option>
-        <option>Monthly</option>
-      </select>
-    </div>
-    <div class="mb-2">
-      <textarea name="description" class="form-control" placeholder="Add description"></textarea>
-    </div>
-    <div class="mb-2">
-      <select name="list" class="form-select">
-        <option selected>All Tasks</option>
-      </select>
-    </div>
-    <div class="d-flex justify-content-end">
-      <button type="submit" class="btn btn-primary">Save</button>
-    </div>
-  </form>
-</div>
 
 <script>
   function toggleAddTaskForm() {
@@ -138,11 +82,6 @@
     const dateInput = document.getElementById("task-date");
     dateInput.style.display = "block";
     dateInput.focus();
-  }
-
-  function toggleCreateTaskPane() {
-    const pane = document.getElementById("create-task-pane");
-    pane.style.display = (pane.style.display === "none") ? "block" : "none";
   }
 </script>
 
