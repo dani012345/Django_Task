@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block page_title %}Starred Tasks{% endblock %}
+{% block title %}My Tasks{% endblock %}
+{% block content %}
+  {% if tasks %}
+    <ul class="list-group">
+      {% for task in tasks %}
+        <li class="list-group-item">{{ task.title }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="text-center mt-4">
+      <h5>No tasks yet</h5>
+      <p>Add your to-dos and keep track of them across your workspace</p>
+    </div>
+  {% endif %}
+{% endblock %}

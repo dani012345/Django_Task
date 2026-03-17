@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Lists{% endblock %}
+{% block content %}
+
+{% if lists %}
+  <ul class="list-group mt-3">
+    {% for lista in lists %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ lista.name }}
+        <div class="d-flex gap-2">
+          <a href="{% url 'list_update' lista.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+          <form method="post" action="{% url 'list_delete' lista.pk %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+          </form>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="empty-state text-center mt-5">
+    <img src="{% static 'icons/list_empty.svg' %}" alt="No lists illustration" style="max-width:250px;">
+    <h5>No lists yet</h5>
+    <p>Create a new list to organize your tasks</p>
+  </div>
+{% endif %}
+
+{% endblock %}
